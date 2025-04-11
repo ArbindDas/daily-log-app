@@ -50,7 +50,7 @@ public class Users {
     @JsonManagedReference
     private List<JournalEntries> journalEntries;
 
-    // todo-->  this is parent table
+    // -->  this is parent table
 
     @Override
     public String toString() {

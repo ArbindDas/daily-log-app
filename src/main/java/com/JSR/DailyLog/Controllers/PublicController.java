@@ -21,13 +21,11 @@ public class PublicController {
 
     private static final Logger logger = LoggerFactory.getLogger(PublicController.class); // Initialize logger
 
-
     @Autowired
     private AuthenticationManager authenticationManager;
 
     @Autowired
     private CustomUsersDetailsService customUsersDetailsService;
-
 
     @Autowired
     private JwtUtil jwtUtil;
@@ -39,20 +37,20 @@ public class PublicController {
 
     /**
      * Endpoint to print a hello message.
-     * TODO: Consider adding localization (i.e., supporting multiple languages) for messages.
-     * TODO: Extend this method for additional greeting types or dynamic messages.
+     * Consider adding localization (i.e., supporting multiple languages) for messages.
+     * Extend this method for additional greeting types or dynamic messages.
      */
     @GetMapping("/print")
     public printHello print() {
-        // TODO: Make the greeting message configurable or dynamic if needed in future requirements.
+        // Make the greeting message configurable or dynamic if needed in future requirements.
         return new printHello("jai shree ram prabhu ......");
     }
 
     /**
      * Endpoint to create a new user.
-     * TODO: Add validation checks for the user's data (e.g., email format, password strength).
-     * TODO: Enhance the error handling for specific cases (e.g., if the email is already in use).
-     * TODO: Consider adding a response body with the created user's ID or other details.
+     * Add validation checks for the user's data (e.g., email format, password strength).
+     * Enhance the error handling for specific cases (e.g., if the email is already in use).
+     * Consider adding a response body with the created user's ID or other details.
      */
     @PostMapping("/createUser")
     public ResponseEntity<?> createUser(@RequestBody @Valid Users users) {
@@ -60,12 +58,12 @@ public class PublicController {
         logger.info("Creating new user: {}", users);
 
         try {
-            // TODO: Consider adding custom validation or business logic before creating the user.
+            // Consider adding custom validation or business logic before creating the user.
 
             boolean isUserCreated = userService.saveNewUser(users);
 
             if (isUserCreated) {
-                // TODO: Return more meaningful response, such as the created user's ID or username.
+                // Return more meaningful response, such as the created user's ID or username.
                 logger.info("User created successfully: {}", users);
                 return new ResponseEntity<>(isUserCreated, HttpStatus.CREATED);
             } else {
@@ -82,26 +80,27 @@ public class PublicController {
     }
 
     @PostMapping("/signup")
-    public ResponseEntity<?>signup(@RequestBody @Valid Users users){
-        boolean savedUser = userService.saveNewUser ( users );
-        if ( savedUser ){
-            return new ResponseEntity<> ( savedUser , HttpStatus.CREATED );
-        }else {
-            return new ResponseEntity<> ( HttpStatus.BAD_REQUEST );
+    public ResponseEntity<?> signup(@RequestBody @Valid Users users) {
+        boolean savedUser = userService.saveNewUser(users);
+        if (savedUser) {
+            return new ResponseEntity<>(savedUser, HttpStatus.CREATED);
+        } else {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
     }
 
-
     @PostMapping("/login")
-    public ResponseEntity<?>login(@RequestBody @Valid Users users){
+    public ResponseEntity<?> login(@RequestBody @Valid Users users) {
         try {
-            authenticationManager.authenticate ( new UsernamePasswordAuthenticationToken ( users.getUsername (), users.getPassword () ) );
-            UserDetails userDetails =    customUsersDetailsService.loadUserByUsername ( users.getUsername () );
-            String jwt = jwtUtil.generateToken ( userDetails.getUsername () );
-            return new ResponseEntity<> ( jwt , HttpStatus.OK );
-        } catch ( Exception e ) {
-            logger.error ( "Exception occurred while creatingAuthenticationToken ", e );
-            return new ResponseEntity<> ( "Incorrect username or password  ", HttpStatus.BAD_REQUEST );
+            authenticationManager.authenticate(
+                    new UsernamePasswordAuthenticationToken(users.getUsername(), users.getPassword())
+            );
+            UserDetails userDetails = customUsersDetailsService.loadUserByUsername(users.getUsername());
+            String jwt = jwtUtil.generateToken(userDetails.getUsername());
+            return new ResponseEntity<>(jwt, HttpStatus.OK);
+        } catch (Exception e) {
+            logger.error("Exception occurred while creatingAuthenticationToken ", e);
+            return new ResponseEntity<>("Incorrect username or password", HttpStatus.BAD_REQUEST);
         }
     }
 }

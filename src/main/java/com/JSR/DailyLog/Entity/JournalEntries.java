@@ -59,7 +59,7 @@ public class JournalEntries {
 
     )
     @JsonBackReference
-    private Users users; // todo -->  A reference to the User who owns this journal entry
+    private Users users; //  -->  A reference to the User who owns this journal entry
 
     @Override
     public String toString () {
@@ -73,5 +73,5 @@ public class JournalEntries {
                 '}';
     }
 
-    // todo-->  this is child table
+    // -->  this is child table
 }
