@@ -30,7 +30,7 @@ public class JournalEntriesService {
     @Autowired
     private UsersService usersService;
 
-    //todo--> Method to save a journal entry associated with a specific user identified by username
+    //--> Method to save a journal entry associated with a specific user identified by username
     @Transactional(propagation = Propagation.REQUIRED)
     @CachePut(value = "users", key = "#username")  // Evict cached user data by username
     public void saveJournalEntriesWithUsers( JournalEntries journalEntries, String username) {
@@ -73,8 +73,8 @@ public class JournalEntriesService {
     }
 
 
-    //todo--> Method to save a journal entry without associating it with a user
-    //todo--> Method to save a journal entry without associating it with a user
+    //--> Method to save a journal entry without associating it with a user
+    //--> Method to save a journal entry without associating it with a user
     @Transactional(propagation =  Propagation.REQUIRES_NEW ,isolation = Isolation.SERIALIZABLE)
     @CachePut (value = "JournalEntries", key = "#journalEntries.id") // Cache the saved journal entry
     public JournalEntries saveEntry(JournalEntries journalEntries) {
@@ -90,7 +90,7 @@ public class JournalEntriesService {
     }
 
 
-    //todo--> Method to retrieve a list of all journal entries
+    //--> Method to retrieve a list of all journal entries
     @Transactional(propagation = Propagation.REQUIRES_NEW  , isolation = Isolation.SERIALIZABLE)
     @Cacheable (value = "JournalEntries", key = "'allJournalEntries'", unless = "#result.isEmpty()")
     public List<JournalEntries> journalEntriesList() {
@@ -105,7 +105,7 @@ public class JournalEntriesService {
         }
     }
 
-    //todo--> Method to retrieve a specific journal entry by its ID
+    //--> Method to retrieve a specific journal entry by its ID
     @Transactional(propagation = Propagation.REQUIRED )
     @Cacheable(value = "JournalEntries", key = "#journalId", unless = "#result.isEmpty()")
     public Optional<JournalEntries> findJournalById(Long journalId) {
@@ -125,7 +125,7 @@ public class JournalEntriesService {
         }
     }
 
-    //todo--> Method to delete a journal entry by its ID for a specific user
+    //--> Method to delete a journal entry by its ID for a specific user
     @Transactional(propagation = Propagation.REQUIRED)
     @CacheEvict(value = "JournalEntries", key = "#journalId")
     public boolean deleteById(Long journalId, String userName) {

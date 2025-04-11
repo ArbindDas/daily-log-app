@@ -135,7 +135,7 @@ public class JournalEntriesController {
             }
         } catch (RuntimeException e) {
             logger.error("Error deleting JournalEntry with ID: {}", myid, e);
-            throw new RuntimeException("An error occurred while deleting journal entry", e);
+            throw new JournalEntriesNotFoundException ( e.getMessage ());
         }
     }
 
@@ -177,7 +177,7 @@ public class JournalEntriesController {
             }
 
         } catch ( RuntimeException e ) {
-            throw new RuntimeException ( e );
+            throw new JournalEntriesNotFoundException ( e.getMessage () );
         }
         return new ResponseEntity <> ( HttpStatus.NOT_FOUND );
     }

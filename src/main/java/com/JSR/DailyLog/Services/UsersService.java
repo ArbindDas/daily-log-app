@@ -32,11 +32,11 @@ public class UsersService {
 
     private final PasswordEncoder passwordEncoder = new BCryptPasswordEncoder ( );
 
-    // todo --> Method to save an admin user, encrypts the password, assigns roles, and saves the user to the database.
+    //  --> Method to save an admin user, encrypts the password, assigns roles, and saves the user to the database.
     @Transactional (propagation = Propagation.REQUIRES_NEW, isolation = Isolation.SERIALIZABLE)
     @CachePut(value = "Admin" , key = "'allAdmins'")
-    // todo--> If you're caching all admin users (i.e., a list of admins), the @CachePut with key 'allAdmins' is fine.
-    //todo-->   If you're caching a single admin user, change the cache key to something unique for the admin
+    // --> If you're caching all admin users (i.e., a list of admins), the @CachePut with key 'allAdmins' is fine.
+    //-->   If you're caching a single admin user, change the cache key to something unique for the admin
     // (e.g., #adminUser.getUsername() or #adminUser.getId()).
     public void saveAdmin ( Users adminUser ) {
         try {
@@ -60,7 +60,7 @@ public class UsersService {
         }
     }
 
-    // todo --> Method to save a normal user, logs details before saving, and catches errors during saving.
+    //  --> Method to save a normal user, logs details before saving, and catches errors during saving.
     @Transactional (propagation = Propagation.REQUIRED)
     public Users saveUser ( Users newUser ) {
         try {
@@ -76,7 +76,7 @@ public class UsersService {
         }
     }
 
-    // todo --> Method to save or update a user. It encodes the password, assigns a role, and logs success or failure.
+    //  --> Method to save or update a user. It encodes the password, assigns a role, and logs success or failure.
     @Transactional (propagation = Propagation.REQUIRED, isolation = Isolation.SERIALIZABLE)
     @CachePut (value = "usersList", key = "'allUsers'")
     public boolean saveNewUser ( Users users ) {
@@ -107,7 +107,7 @@ public class UsersService {
     }
 
 
-    // todo --> Method to retrieve a list of all users from the database and log the process.
+    //  --> Method to retrieve a list of all users from the database and log the process.
     @Transactional (propagation = Propagation.REQUIRES_NEW, isolation = Isolation.SERIALIZABLE)
 //    @Cacheable(value = "usersList", key = "'allUsers'", unless = "#result.isEmpty()")
 //    @Cacheable(value = "usersList", key = "#root.methodName")
@@ -132,7 +132,7 @@ public class UsersService {
     }
 
 
-    // todo --> Method to retrieve a user by their ID. Logs the attempt and the result (success or not found).
+    //  --> Method to retrieve a user by their ID. Logs the attempt and the result (success or not found).
     @Transactional (propagation = Propagation.REQUIRES_NEW, isolation = Isolation.SERIALIZABLE)
     @Cacheable (value = "usersById", key = "#userId", unless = "#result.isEmpty()")
     public Optional< Users > getUsersById ( Long userId ) {
@@ -158,7 +158,7 @@ public class UsersService {
         }
     }
 
-    // todo --> Method to find a user by their username. Logs the process and outcome (found or not found).
+    //  --> Method to find a user by their username. Logs the process and outcome (found or not found).
     @Transactional (propagation = Propagation.REQUIRED)
     @Cacheable (value = "users", key = "#username", unless = "#result == null")
     public Optional< Users > findUserByUserName ( String username ) {
@@ -184,7 +184,7 @@ public class UsersService {
         }
     }
 
-    // todo --> Method to delete a user by their ID. Logs success or failure (not found or deleted).
+    //  --> Method to delete a user by their ID. Logs success or failure (not found or deleted).
     @Transactional (propagation = Propagation.REQUIRES_NEW, isolation = Isolation.SERIALIZABLE)
     @CacheEvict (value = "usersById", key = "#userId")
     public boolean deleteUserById ( Long userId ) {
@@ -209,7 +209,7 @@ public class UsersService {
         }
     }
 
-    // todo --> Method to delete a user by their username. Logs the process and outcome (found or not found).
+    //  --> Method to delete a user by their username. Logs the process and outcome (found or not found).
     @Transactional (propagation = Propagation.REQUIRES_NEW, isolation = Isolation.SERIALIZABLE)
     @CacheEvict (value = "users", key = "#username")
     public void deleteByUserName ( String username ) {
