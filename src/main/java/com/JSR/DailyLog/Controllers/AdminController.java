@@ -1,8 +1,10 @@
 package com.JSR.DailyLog.Controllers;
 
+import com.JSR.DailyLog.Cache.AppCache;
 import com.JSR.DailyLog.Entity.Users;
 import com.JSR.DailyLog.Exception.UserNotFoundException;
 import com.JSR.DailyLog.Services.UsersService;
+import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -72,4 +74,5 @@ public class AdminController {
             throw new RuntimeException("An error occurred while creating admin: " + e.getMessage());
         }
     }
+
 }
