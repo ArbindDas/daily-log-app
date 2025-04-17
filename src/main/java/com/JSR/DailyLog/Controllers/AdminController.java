@@ -21,6 +21,10 @@ import java.util.List;
 @RequestMapping("/api/admin")
 public class AdminController {
 
+
+    @Autowired
+    private AppCache appCache;
+
     private final UsersService usersService;
 
     @Autowired
@@ -73,6 +77,12 @@ public class AdminController {
             // Return more meaningful error details for debugging and troubleshooting
             throw new RuntimeException("An error occurred while creating admin: " + e.getMessage());
         }
+    }
+
+
+    @GetMapping("/clear-app-cache")
+    public void clearAppCache(){
+        appCache.init ();
     }
 
 }

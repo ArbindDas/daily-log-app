@@ -26,11 +26,12 @@ public class AppCache {
     private ConfigJournalAppEntityRepository configJournalAppEntityRepository;
 
 
-    public Map<String , String> APP_CACHE = new HashMap<> (  );
+//    public Map<String , String> APP_CACHE = new HashMap<> (  );
+    public Map<String , String> APP_CACHE;
 
     @PostConstruct()
     public void init(){
-//        APP_CACHE = new HashMap<> (  );
+        APP_CACHE = new HashMap<> (  );
         List< ConfigJournalAppEntity > appEntityRepositoryAll = configJournalAppEntityRepository.findAll ( );
         for (ConfigJournalAppEntity configJournalAppEntity : appEntityRepositoryAll){
             APP_CACHE.put ( configJournalAppEntity.getKey ( ) , configJournalAppEntity.getValue ( ) );

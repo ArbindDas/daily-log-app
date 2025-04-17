@@ -1,137 +1,183 @@
-
 package com.JSR.DailyLog.Api.response;
+
 import com.fasterxml.jackson.annotation.JsonProperty;
-import lombok.AllArgsConstructor;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.util.List;
+
 @Getter
 @Setter
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class WeatherResponse {
 
+    @JsonProperty("request")
     private Request request;
+
+    @JsonProperty("location")
     private Location location;
+
+    @JsonProperty("current")
     private Current current;
 
     @Getter
     @Setter
-    public static class AirQuality {
-        public String co;
-        public String no2;
-        public String o3;
-        public String so2;
+    @JsonIgnoreProperties(ignoreUnknown = true)
+    public static class Request {
+        @JsonProperty("type")
+        private String type;
 
-        @JsonProperty("pm2_5")
-        public String pm2;
+        @JsonProperty("query")
+        private String query;
 
-        public String pm10;
+        @JsonProperty("language")
+        private String language;
 
-        @JsonProperty("us-epa-index")
-        public String index;
-
-        @JsonProperty("gb-defra-index")
-        public String index2;
+        @JsonProperty("unit")
+        private String unit;
     }
 
     @Getter
     @Setter
-    @AllArgsConstructor
-    @NoArgsConstructor
-    public static class Astro {
-        public String sunrise;
-        public String sunset;
-        public String moonrise;
-        public String moonset;
-
-        @JsonProperty("moon_phase")
-        public String moonPhase;
-
-        @JsonProperty("moon_illumination")
-        public int moonIllumination;
-    }
-
-    @Getter
-    @Setter
-    @AllArgsConstructor
-    @NoArgsConstructor
-    public static class Current {
-
-        @JsonProperty("observation_time")
-        public String observationTime;
-
-        public int temperature;
-
-        @JsonProperty("weather_code")
-        public int weatherCode;
-
-        @JsonProperty("weather_icons")
-        public List<String> weatherIcons;
-
-        @JsonProperty("weather_descriptions")
-        public List<String> weatherDescriptions;
-
-        public Astro astro;
-
-        @JsonProperty("air_quality")
-        public AirQuality airQuality;
-
-        @JsonProperty("windSpeed")
-        public int wind_speed;
-
-        @JsonProperty("wind_degree")
-        public int windDegree;
-
-        @JsonProperty("windDir")
-        public String wind_dir;
-
-        public int pressure;
-        public double precip;
-        public int humidity;
-        public int cloudcover;
-        public int feelslike;
-
-        @JsonProperty("uv_index")
-        public int uvIndex;
-
-        public int visibility;
-
-        @JsonProperty("is_day")
-        public String isDay;
-    }
-
-    @Getter
-    @Setter
-    @AllArgsConstructor
-    @NoArgsConstructor
+    @JsonIgnoreProperties(ignoreUnknown = true)
     public static class Location {
-        public String name;
-        public String country;
-        public String region;
-        public String lat;
-        public String lon;
+        @JsonProperty("name")
+        private String name;
+
+        @JsonProperty("country")
+        private String country;
+
+        @JsonProperty("region")
+        private String region;
+
+        @JsonProperty("lat")
+        private String lat;
+
+        @JsonProperty("lon")
+        private String lon;
 
         @JsonProperty("timezone_id")
-        public String timezoneId;
+        private String timezoneId;
 
-        public String localtime;
+        @JsonProperty("localtime")
+        private String localtime;
 
         @JsonProperty("localtime_epoch")
-        public int localtimeEpoch;
+        private int localtimeEpoch;
 
         @JsonProperty("utc_offset")
-        public String utcOffset;
+        private String utcOffset;
     }
 
     @Getter
     @Setter
-    @AllArgsConstructor
-    @NoArgsConstructor
-    public static class Request {
-        public String type;
-        public String query;
-        public String language;
-        public String unit;
+    @JsonIgnoreProperties(ignoreUnknown = true)
+    public static class Current {
+        @JsonProperty("observation_time")
+        private String observationTime;
+
+        @JsonProperty("temperature")
+        private int temperature;
+
+        @JsonProperty("weather_code")
+        private int weatherCode;
+
+        @JsonProperty("weather_icons")
+        private List<String> weatherIcons;
+
+        @JsonProperty("weather_descriptions")
+        private List<String> weatherDescriptions;
+
+        @JsonProperty("astro")
+        private Astro astro;
+
+        @JsonProperty("air_quality")
+        private AirQuality airQuality;
+
+        @JsonProperty("wind_speed")
+        private int windSpeed;
+
+        @JsonProperty("wind_degree")
+        private int windDegree;
+
+        @JsonProperty("wind_dir")
+        private String windDir;
+
+        @JsonProperty("pressure")
+        private int pressure;
+
+        @JsonProperty("precip")
+        private double precip;
+
+        @JsonProperty("humidity")
+        private int humidity;
+
+        @JsonProperty("cloudcover")
+        private int cloudcover;
+
+        @JsonProperty("feelslike")
+        private int feelslike;
+
+        @JsonProperty("uv_index")
+        private int uvIndex;
+
+        @JsonProperty("visibility")
+        private int visibility;
+
+        @JsonProperty("is_day")
+        private String isDay;
+    }
+
+    @Getter
+    @Setter
+    @JsonIgnoreProperties(ignoreUnknown = true)
+    public static class Astro {
+        @JsonProperty("sunrise")
+        private String sunrise;
+
+        @JsonProperty("sunset")
+        private String sunset;
+
+        @JsonProperty("moonrise")
+        private String moonrise;
+
+        @JsonProperty("moonset")
+        private String moonset;
+
+        @JsonProperty("moon_phase")
+        private String moonPhase;
+
+        @JsonProperty("moon_illumination")
+        private int moonIllumination;
+    }
+
+    @Getter
+    @Setter
+    @JsonIgnoreProperties(ignoreUnknown = true)
+    public static class AirQuality {
+        @JsonProperty("co")
+        private String co;
+
+        @JsonProperty("no2")
+        private String no2;
+
+        @JsonProperty("o3")
+        private String o3;
+
+        @JsonProperty("so2")
+        private String so2;
+
+        @JsonProperty("pm2_5")
+        private String pm25;
+
+        @JsonProperty("pm10")
+        private String pm10;
+
+        @JsonProperty("us-epa-index")
+        private String usEpaIndex;
+
+        @JsonProperty("gb-defra-index")
+        private String gbDefraIndex;
     }
 }

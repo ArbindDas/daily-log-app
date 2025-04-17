@@ -221,6 +221,7 @@ public class UsersController {
 
         if (weatherResponse != null && weatherResponse.getCurrent() != null) {
             greeting += ", weather feels like " + weatherResponse.getCurrent().getFeelslike() + "°C";
+            greeting+="sun feels like" + weatherResponse.getCurrent ().getAstro ().getSunset () + "°C";
         } else {
             greeting += ", weather information is not available at the moment.";
         }

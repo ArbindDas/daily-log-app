@@ -16,7 +16,6 @@ import java.util.List;
 @Getter
 @Setter
 @Builder
-
 public class Users {
 
     @Id
@@ -33,10 +32,15 @@ public class Users {
     @Email (message = "Email should be valid")
     private String email;
 
+
+    @Column(name = "sentiment_analysis")
+    private boolean sentimentAnalysis;
+
     // User's password (required, length 8-100)
     @NotBlank(message = "Password cannot be blank")
     @Size(min = 8, max = 100, message = "Password must be between 8 and 100 characters")
     private String password;
+
 
 
 
