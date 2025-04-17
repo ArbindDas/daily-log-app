@@ -1,8 +1,10 @@
 package com.JSR.DailyLog.Controllers;
 
+import com.JSR.DailyLog.Api.response.WeatherResponse;
 import com.JSR.DailyLog.Entity.Users;
 import com.JSR.DailyLog.Exception.UserNotFoundException;
 import com.JSR.DailyLog.Services.UsersService;
+import com.JSR.DailyLog.Services.WeatherService;
 import jakarta.validation.Valid;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -19,6 +21,11 @@ import java.util.Optional;
 @RestController
 @RequestMapping("/api/user")
 public class UsersController {
+
+
+
+    @Autowired
+    private WeatherService weatherService;
 
     private static final Logger logger = LoggerFactory.getLogger(UsersController.class);
 
@@ -201,4 +208,29 @@ public class UsersController {
         // Return the updated user.
         return existingUser;
     }
+
+
+
+    @GetMapping
+    public ResponseEntity<?> greeting() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String username = authentication.getName();
+
+        WeatherResponse weatherResponse = weatherService.getWeather("Kathmandu");
+        String greeting = "Hi " + username;
+
+        if (weatherResponse != null && weatherResponse.getCurrent() != null) {
+            greeting += ", weather feels like " + weatherResponse.getCurrent().getFeelslike() + "°C";
+        } else {
+            greeting += ", weather information is not available at the moment.";
+        }
+
+        System.out.println("Current: " + (weatherResponse != null ? weatherResponse.getCurrent() : "null"));
+
+
+        return new ResponseEntity<>(greeting, HttpStatus.OK);
+    }
+
+
+
 }
