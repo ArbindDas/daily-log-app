@@ -14,7 +14,7 @@ import org.springframework.web.util.UriComponentsBuilder;
 @Component
 public class WeatherService {
 
-    @Value ("${weather.api.key}")
+    @Value("${weather.api.key}")
     private  String apiKey;
 
 
@@ -26,15 +26,18 @@ public class WeatherService {
 
     public WeatherResponse getWeather(String city){
 
-
-//        String finalApi = appCache.APP_CACHE.get ( AppCache.keys.weather_api.toString() ).replace ( Placeholders.CITY , city ).replace ( Placeholders.API_KEY, apiKey );
-
-        String finalApi = UriComponentsBuilder.fromUriString ( appCache.APP_CACHE.get (AppCache.keys.weather_api.toString ()) )
+        String finalApi = UriComponentsBuilder.fromUriString(appCache.APP_CACHE.get(AppCache.keys.weather_api.toString()))
                 .queryParam(Placeholders.CITY, city)
                 .queryParam(Placeholders.API_KEY, apiKey)
                 .toUriString();
 
+        System.out.println("Final API URL: " + finalApi); // Debugging line
+
         ResponseEntity< WeatherResponse > response = restTemplate.exchange ( finalApi , HttpMethod.GET , null , WeatherResponse.class );
+        if (!response.getStatusCode().is2xxSuccessful()) {
+            System.out.println("Error status code: " + response.getStatusCode());
+        }
+
         WeatherResponse body = response.getBody ( );
         return body;
     }
