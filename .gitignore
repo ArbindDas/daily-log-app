@@ -1,8 +1,10 @@
 # Ignore test directory
 test/
 
-# Ignore application.properties in the src/main/resources folder
-/src/main/resources/application.properties
+
+# Ignore application.properties in src/main/resources
+/daily-log-app/src/main/resources/application.properties
+
 
 # Existing entries
 HELP.md
