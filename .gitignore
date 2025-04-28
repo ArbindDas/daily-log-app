@@ -1,8 +1,8 @@
 # Ignore test directory
 test/
 
-# Ignore application.properties
-application.properties
+# Ignore application.properties in the src/main/resources folder
+/src/main/resources/application.properties
 
 # Existing entries
 HELP.md
