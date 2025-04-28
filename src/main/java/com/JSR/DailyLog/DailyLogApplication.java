@@ -15,6 +15,7 @@ public class DailyLogApplication {
 
 	public static void main(String[] args) {
 		SpringApplication.run(DailyLogApplication.class, args);
+
 	}
 
 

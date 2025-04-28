@@ -57,11 +57,6 @@ public class AdminController {
         }
     }
 
-    /**
-     * Endpoint to create a new admin user.
-     * : Validate admin user data before saving to the database (e.g., check if email is already taken).
-     * : Add authorization checks to ensure only authorized users can create new admins.
-     */
     @PostMapping("/create-new-admin")
     public ResponseEntity<?> createAdmin(Users adminUser) {
         try {

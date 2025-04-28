@@ -29,9 +29,9 @@ public class UserRepositoryImpl {
         Optional<Users> user = userRepository.findUserByEmailAndSentimentAnalysis(email, sentimentAnalysis);
 
         if (user.isPresent()) {
-            return user.get();  // Return the found user
+            return user.get();
         } else {
-            return null;  // User not found
+            return null;
         }
     }
 }

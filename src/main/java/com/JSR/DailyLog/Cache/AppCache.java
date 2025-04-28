@@ -29,6 +29,16 @@ public class AppCache {
 //    public Map<String , String> APP_CACHE = new HashMap<> (  );
     public Map<String , String> APP_CACHE;
 
+
+//    🔥 Why is this caching useful?
+//    Now whenever your application needs the weather_api URL,
+//
+//    It can quickly get it from APP_CACHE (no need to go to the database every time).
+//
+//    Much faster and efficient for frequent reads.
+
+
+
     @PostConstruct()
     public void init(){
         APP_CACHE = new HashMap<> (  );

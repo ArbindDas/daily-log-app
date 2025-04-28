@@ -1,3 +1,10 @@
+# Ignore test directory
+test/
+
+# Ignore application.properties
+application.properties
+
+# Existing entries
 HELP.md
 target/
 !.mvn/wrapper/maven-wrapper.jar

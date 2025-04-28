@@ -16,11 +16,10 @@ public interface UsersDetailsRepository extends JpaRepository< Users , Long > {
 
        void deleteByUsername(String username);
 
-    // Get users where sentimentAnalysis is true and email is valid
+
     @Query ("SELECT u FROM Users u WHERE u.sentimentAnalysis = true AND u.email LIKE '%@%.%'")
     List< Users > getUsersForSentimentAnalysis();
 
-    // New query to check for a specific email and sentiment analysis value
     @Query("SELECT u FROM Users u WHERE u.email = :email AND u.sentimentAnalysis = :sentimentAnalysis")
     Optional<Users> findUserByEmailAndSentimentAnalysis( @Param("email") String email, @Param ("sentimentAnalysis") boolean sentimentAnalysis);
 }
