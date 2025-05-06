@@ -34,7 +34,7 @@ public class Users {
 
 
     @Column(name = "sentiment_analysis")
-    private boolean sentimentAnalysis;
+    private String sentimentAnalysis;
 
     // User's password (required, length 8-100)
     @NotBlank(message = "Password cannot be blank")

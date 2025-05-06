@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login Status</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/alpinejs/3.10.5/cdn.min.js" defer></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.19/tailwind.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <style>
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+        }
+
+        @keyframes shimmer {
+            0% { background-position: -200% 0; }
+            100% { background-position: 200% 0; }
+        }
+
+        .animate-fade-in {
+            animation: fadeIn 0.8s ease-out forwards;
+        }
+
+        .animate-pulse-slow {
+            animation: pulse 3s infinite ease-in-out;
+        }
+
+        .animate-float {
+            animation: float 6s infinite ease-in-out;
+        }
+
+        .bg-gradient {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+
+        .welcome-text {
+            background: linear-gradient(90deg, #3b82f6, #8b5cf6, #3b82f6);
+            background-size: 200% auto;
+            color: transparent;
+            -webkit-background-clip: text;
+            background-clip: text;
+            animation: shimmer 3s linear infinite;
+        }
+
+        .info-box {
+            transition: all 0.3s ease;
+            border-left: 4px solid transparent;
+        }
+
+        .info-box:hover {
+            transform: translateX(5px);
+            border-left: 4px solid #6366f1;
+            background-color: rgba(99, 102, 241, 0.05);
+        }
+
+        #threejs-background {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+        }
+
+        .content-container {
+            position: relative;
+            z-index: 10;
+        }
+    </style>
+</head>
+<body class="min-h-screen flex items-center justify-center bg-gray-900"
+      x-data="{ loaded: false }"
+      x-init="setTimeout(() => loaded = true, 300)">
+
+<div id="threejs-background"></div>
+
+<div class="container mx-auto px-4 content-container">
+    <div class="max-w-lg mx-auto bg-white bg-opacity-95 rounded-2xl shadow-xl overflow-hidden backdrop-filter backdrop-blur-sm"
+         :class="{ 'animate-fade-in': loaded }">
+
+        <!-- Header with wave design -->
+        <div class="bg-gradient h-28 flex items-center justify-center relative overflow-hidden">
+            <div class="animate-float absolute inset-0 opacity-30">
+                <svg viewBox="0 0 400 100" preserveAspectRatio="none" class="h-full w-full">
+                    <path d="M0,0 Q100,50 200,25 T400,50 V100 H0 Z" fill="white"></path>
+                </svg>
+            </div>
+            <h1 class="text-white text-3xl font-bold z-10 text-center">Authentication Status</h1>
+        </div>
+
+        <!-- Content area -->
+        <div class="p-8">
+            <!-- User logged in state -->
+            <div th:if="${principal != null}" class="text-center animate-fade-in" style="animation-delay: 0.3s">
+                <div class="mb-6 animate-pulse-slow">
+                    <!-- Smaller checkmark icon -->
+                    <svg class="w-12 h-12 mx-auto text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                    </svg>
+                </div>
+                <h2 class="text-2xl font-bold text-gray-800 mb-2 welcome-text">Welcome!</h2>
+                <p class="text-xl mb-4">Hello, <span th:text="${principal.getAttribute('name')}" class="font-semibold text-indigo-600"></span></p>
+                <p class="text-gray-500 mb-6 italic">You have successfully logged in.</p>
+                <div class="space-y-3">
+                    <div class="flex items-center p-3 bg-gray-50 rounded-lg info-box">
+                        <span class="w-24 text-sm font-medium text-gray-500">Email:</span>
+                        <span th:text="${principal.getAttribute('email') ?: 'Not available'}" class="text-gray-700"></span>
+                    </div>
+                    <div class="flex items-center p-3 bg-gray-50 rounded-lg info-box">
+                        <span class="w-24 text-sm font-medium text-gray-500">Provider:</span>
+                        <span th:text="${principal.getAttribute('provider') ?: 'OAuth2'}" class="text-gray-700"></span>
+                    </div>
+                </div>
+                <div class="mt-8">
+                    <a href="/logout" class="inline-block bg-indigo-600 hover:bg-indigo-700 text-white font-medium py-2 px-6 rounded-lg transition-colors duration-300 shadow-md hover:shadow-lg transform hover:-translate-y-1">
+                        Sign Out
+                    </a>
+                </div>
+            </div>
+
+            <!-- User not logged in state -->
+            <div th:if="${principal == null}" class="text-center animate-fade-in" style="animation-delay: 0.3s">
+                <div class="mb-6 animate-pulse-slow">
+                    <svg class="w-12 h-12 mx-auto text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                    </svg>
+                </div>
+                <h2 class="text-2xl font-bold text-gray-800 mb-2">Not Logged In</h2>
+                <p class="text-gray-500 mb-8">You are currently not logged in to the system.</p>
+                <div class="mt-8 space-y-3 sm:space-y-0 sm:space-x-2 sm:flex sm:justify-center">
+                    <a href="/oauth2/authorization/github" class="inline-block bg-gray-800 hover:bg-gray-900 text-white font-medium py-2 px-6 rounded-lg transition-colors duration-300 shadow-md hover:shadow-lg transform hover:-translate-y-1">
+                        GitHub Login
+                    </a>
+                    <a href="/oauth2/authorization/google" class="inline-block bg-blue-500 hover:bg-blue-600 text-white font-medium py-2 px-6 rounded-lg transition-colors duration-300 shadow-md hover:shadow-lg transform hover:-translate-y-1">
+                        Google Login
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <div class="px-8 py-4 bg-gray-50 border-t border-gray-100">
+            <p class="text-center text-gray-500 text-sm">&copy; 2025 Your Application. All rights reserved.</p>
+        </div>
+    </div>
+</div>
+
+<script>
+    // Initialize Three.js scene
+    function initThreeJS() {
+        const scene = new THREE.Scene();
+        const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+        const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        renderer.setClearColor(0x000000, 0);
+        document.getElementById('threejs-background').appendChild(renderer.domElement);
+
+        // Add particles
+        const particlesGeometry = new THREE.BufferGeometry();
+        const particlesCount = 1500;
+
+        const posArray = new Float32Array(particlesCount * 3);
+        const colorsArray = new Float32Array(particlesCount * 3);
+
+        for(let i = 0; i < particlesCount * 3; i += 3) {
+            // Position
+            posArray[i] = (Math.random() - 0.5) * 15;
+            posArray[i + 1] = (Math.random() - 0.5) * 15;
+            posArray[i + 2] = (Math.random() - 0.5) * 15;
+
+            // Colors (purple-blue gradient)
+            colorsArray[i] = Math.random() * 0.3 + 0.4;  // R: purple-blue range
+            colorsArray[i + 1] = Math.random() * 0.2 + 0.2;  // G: low
+            colorsArray[i + 2] = Math.random() * 0.5 + 0.5;  // B: high blue
+        }
+
+        particlesGeometry.setAttribute('position', new THREE.BufferAttribute(posArray, 3));
+        particlesGeometry.setAttribute('color', new THREE.BufferAttribute(colorsArray, 3));
+
+        const particlesMaterial = new THREE.PointsMaterial({
+            size: 0.03,
+            transparent: true,
+            opacity: 0.8,
+            vertexColors: true,
+            blending: THREE.AdditiveBlending
+        });
+
+        const particlesMesh = new THREE.Points(particlesGeometry, particlesMaterial);
+        scene.add(particlesMesh);
+
+        // Position camera
+        camera.position.z = 5;
+
+        // Mouse interaction
+        let mouseX = 0;
+        let mouseY = 0;
+
+        document.addEventListener('mousemove', (event) => {
+            mouseX = (event.clientX / window.innerWidth) * 2 - 1;
+            mouseY = -(event.clientY / window.innerHeight) * 2 + 1;
+        });
+
+        // Animation loop
+        const animate = () => {
+            requestAnimationFrame(animate);
+
+            // Gentle rotation
+            particlesMesh.rotation.x += 0.0005;
+            particlesMesh.rotation.y += 0.0007;
+
+            // Mouse interaction
+            particlesMesh.rotation.x += mouseY * 0.0005;
+            particlesMesh.rotation.y += mouseX * 0.0005;
+
+            renderer.render(scene, camera);
+        };
+
+        animate();
+
+        // Handle window resize
+        window.addEventListener('resize', () => {
+            camera.aspect = window.innerWidth / window.innerHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize(window.innerWidth, window.innerHeight);
+        });
+    }
+
+    // Initialize Three.js when the page loads
+    window.addEventListener('DOMContentLoaded', initThreeJS);
+</script>
+</body>
+</html>

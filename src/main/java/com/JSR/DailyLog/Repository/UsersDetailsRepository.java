@@ -17,9 +17,10 @@ public interface UsersDetailsRepository extends JpaRepository< Users , Long > {
        void deleteByUsername(String username);
 
 
-    @Query ("SELECT u FROM Users u WHERE u.sentimentAnalysis = true AND u.email LIKE '%@%.%'")
-    List< Users > getUsersForSentimentAnalysis();
+    @Query("SELECT u FROM Users u WHERE u.sentimentAnalysis = :sentiment")
+    List<Users> getUsersForSentimentAnalysis(@Param("sentiment") String sentiment);
+
 
     @Query("SELECT u FROM Users u WHERE u.email = :email AND u.sentimentAnalysis = :sentimentAnalysis")
-    Optional<Users> findUserByEmailAndSentimentAnalysis( @Param("email") String email, @Param ("sentimentAnalysis") boolean sentimentAnalysis);
+    Optional<Users> findUserByEmailAndSentimentAnalysis( @Param("email") String email, @Param ("sentimentAnalysis") String sentimentAnalysis);
 }

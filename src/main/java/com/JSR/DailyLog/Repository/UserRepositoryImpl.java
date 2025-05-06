@@ -20,12 +20,12 @@ public class UserRepositoryImpl {
     private UsersDetailsRepository userRepository;
 
 
-    public List< Users > getUserForSA() {
-        return userRepository.getUsersForSentimentAnalysis();
+    public List< Users > getUserForSA(String sentiment) {
+        return userRepository.getUsersForSentimentAnalysis( sentiment);
     }
 
 
-    public Users getUserByEmailAndSentimentAnalysis(String email, boolean sentimentAnalysis) {
+    public Users getUserByEmailAndSentimentAnalysis(String email, String sentimentAnalysis) {
         Optional<Users> user = userRepository.findUserByEmailAndSentimentAnalysis(email, sentimentAnalysis);
 
         if (user.isPresent()) {

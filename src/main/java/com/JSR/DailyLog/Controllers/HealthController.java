@@ -12,4 +12,5 @@ public class HealthController {
     public String healthcheck(){
         return "check up succesfully Done  : ";
     }
+
 }

@@ -6,6 +6,8 @@ import com.JSR.DailyLog.Entity.Users;
 import com.JSR.DailyLog.Repository.UserRepositoryImpl;
 import com.JSR.DailyLog.Services.EmailService;
 import com.JSR.DailyLog.Services.SentimentAnalysisService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
@@ -18,46 +20,57 @@ import java.util.stream.Collectors;
 @Component
 public class UserScheduler {
 
+    private static final Logger logger = LoggerFactory.getLogger(UserScheduler.class);
 
 
     @Autowired
     private SentimentAnalysisService sentimentAnalysisService;
 
-
     @Autowired
     private EmailService emailService;
-
 
     @Autowired
     private UserRepositoryImpl userRepository;
 
-
     @Autowired
     private AppCache appCache;
 
+    /**
+     * Runs every Sunday at 9:00 AM
+     */
+//    @Scheduled(cron = "0 0 9 ? * SUN") // Fixed CRON expression
+//    @Scheduled(cron = "0 * * * * *")  // Every 1 minute at 0 seconds
+    @Scheduled(fixedRate = 60000)
+    public void fetchUsersAndSendMail() {
+        String sentiment = "positive"; // or compute dynamically if needed
 
+        List<Users> usersList = userRepository.getUserForSA(sentiment);
 
-    @Scheduled(cron = "0 9 * * SUN")
-    public  void  fetchUsersAndSendMail(){
+        for (Users user : usersList) {
+            List<JournalEntries> journalEntries = user.getJournalEntries();
 
-        List< Users > usersList = userRepository.getUserForSA ();
+            List<String> recentContents = journalEntries.stream()
+                    .filter(entry -> entry.getCreatedAt()
+                            .isAfter(LocalDateTime.now().minus(7, ChronoUnit.DAYS)))
+                    .map(JournalEntries::getContent)
+                    .collect(Collectors.toList());
 
-        for (Users users : usersList){
-            List< JournalEntries > journalEntries  = users.getJournalEntries ();
-            List< String > filterEntries = journalEntries.stream ( ).filter (
-                    x -> x.getCreatedAt ( ).isAfter ( LocalDateTime.now ( ).minus ( 7 , ChronoUnit.DAYS ) ) )
-                    .map ( x -> x.getContent () ).collect ( Collectors.toList ( ) );
+            if (!recentContents.isEmpty()) {
+                String joinedEntry = String.join(" ", recentContents);
 
-            String entry = String.join ( " "  , filterEntries);
-            String sentiment = sentimentAnalysisService.getSentiment ( entry );
-            emailService.sendEmail ( users.getEmail () , "senitment for last 7 days " , sentiment );
+                logger.info("Sending sentiment email to {}", user.getEmail());
 
+                emailService.sendEmail(user.getEmail(), "Sentiment for last 7 days", sentiment);
+            }
         }
     }
 
 
-    @Scheduled(cron = "0 0 /10 * ? * *")
-    public void clearAppCache(){
-        appCache.init ();
+    /**
+     * Runs every 10 minutes
+     */
+    @Scheduled(cron = "0 */10 * * * ?") // Fixed CRON for every 10 minutes
+    public void clearAppCache() {
+        appCache.init();
     }
 }
