@@ -21,7 +21,7 @@ public class UserRepositoryImplTest {
     @Test
     void testFindUserByEmailAndSentimentAnalysis() {
         // Provide the email and sentiment analysis condition you want to check
-        String email = "dasarbind269@gmail.com";
+        String email = "abhsahd060@gmail.com";
         String sentimentAnalysis = "neutral";  // Change this as needed
 
         Users foundUser = userRepository.getUserByEmailAndSentimentAnalysis(email, sentimentAnalysis);
